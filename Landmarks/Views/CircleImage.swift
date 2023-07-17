@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct CircleImage: View {
+    var image: Image
     var body: some View {
-        // pass the name of the image to display
-        Image("turtlerock")
+        image
             .clipShape(Circle())
             // The Circle type is a shape that you can use as a mask, or as a view by giving the circle a stroke or fill.
             .overlay{
@@ -22,6 +22,6 @@ struct CircleImage: View {
 
 struct CircleImage_Previews: PreviewProvider {
     static var previews: some View {
-        CircleImage()
+        CircleImage(image: Image("turtlerock"))
     }
 }
