@@ -6,8 +6,18 @@
 //
 
 import Foundation
+import Combine
 
-var landmarks: [Landmark] = load("landmarkData.json")
+
+final class ModelData: ObservableObject {
+    @Published var landmarks: [Landmark] = load("landmarkData.json") // An observable object needs to publish any changes to its data,
+                                                                    // so that its subscribers can pick up the change.
+}
+/*
+ SwiftUI subscribes to your observable object,
+ and updates any views that need refreshing when the data changes.
+ */
+
 
 // Create a load(_:) method that fetches JSON data with a given name from the app’s main bundle.
 
@@ -16,8 +26,8 @@ func load<T: Decodable>(_ filename: String) -> T { // The load method relies on 
     let data: Data
     
     guard let file = Bundle.main.url(forResource: filename, withExtension: nil)
-    else {
-        fatalError("Couldn't find \(filename) in main bundle.")
+        else {
+            fatalError("Couldn't find \(filename) in main bundle.")
     }
     
     do {

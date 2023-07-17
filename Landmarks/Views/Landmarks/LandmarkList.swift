@@ -8,6 +8,15 @@
 import SwiftUI
 
 struct LandmarkList: View {
+    @EnvironmentObject var modelData: ModelData
+    @State private var showFavoritesOnly = false
+    
+    var filteredLandmarks: [Landmark] {
+        modelData.landmarks.filter { landmark in
+                (!showFavoritesOnly || landmark.isFavorite)
+        }
+    }
+    
     var body: some View {
         NavigationView{
             /*
@@ -16,11 +25,18 @@ struct LandmarkList: View {
              identifies each element, or by making your data type conform to the Identifiable
              protocol.
              */
-            List(landmarks) { landmark in
-                NavigationLink{
-                    LandmarkDetail(landmark:landmark)
-                } label: {
-                    LandmarkRow(landmark: landmark)
+            List {
+                Toggle(isOn:$showFavoritesOnly){
+                    // use the $ prefix to access a binding to a state variable
+                    Text("Favorites only")
+                }
+                
+                ForEach(filteredLandmarks) { landmark in
+                    NavigationLink{
+                        LandmarkDetail(landmark:landmark)
+                    } label: {
+                        LandmarkRow(landmark: landmark)
+                    }
                 }
             }
             // Completed the dynamically-generated list
@@ -33,6 +49,11 @@ struct LandmarkList: View {
 
 struct LandmarkList_Previews: PreviewProvider {
     static var previews: some View {
+        LandmarkList()
+            .environmentObject(ModelData())
+            // The modelData property gets its value automatically, as long as the environmentObject(_:) modifier has been applied to a parent.
+        
+        /*
         // When the elements of your data are simple value types — like the strings you’re using here — you can use \.self as key path to the identifier.
         ForEach(["iPhone SE (3rd generation)", "iPhone 14 Pro Max"], id: \.self) { deviceName in
             LandmarkList()
@@ -40,5 +61,6 @@ struct LandmarkList_Previews: PreviewProvider {
                 .previewDisplayName(deviceName) // Use the previewDisplayName(_:) modifier to add                              // the device names as labels for the previews.
         }
         // You can specify the device to use in the active scheme, in code, or by previewing directly on your device.
+        */
     }
 }
