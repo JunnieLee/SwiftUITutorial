@@ -39,5 +39,6 @@ struct LandmarkList_Previews: PreviewProvider {
                 .previewDevice(PreviewDevice(rawValue: deviceName))
                 .previewDisplayName(deviceName) // Use the previewDisplayName(_:) modifier to add                              // the device names as labels for the previews.
         }
+        // You can specify the device to use in the active scheme, in code, or by previewing directly on your device.
     }
 }
